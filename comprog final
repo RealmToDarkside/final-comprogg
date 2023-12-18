@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#define MAX_STUDENTS 50
+
+
+struct Student {
+    char name[50];
+    int studentId;
+    float grade;
+};
+
+
+void displayMenu();
+void addStudent(struct Student students[], int *studentCount);
+void viewStudents(struct Student students[], int studentCount);
+void searchStudent(struct Student students[], int studentCount);
+
+int main() {
+    struct Student students[MAX_STUDENTS];  
+    int studentCount = 0;                   
+    int choice;
+
+    do {
+        
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        
+        switch (choice) {
+            case 1:
+                addStudent(students, &studentCount);
+                break;
+            case 2:
+                viewStudents(students, studentCount);
+                break;
+            case 3:
+                searchStudent(students, studentCount);
+                break;
+            case 0:
+                
+                break;
+            default:
+                printf("Invalid choice. Please enter a valid option.\n");
+        }
+
+    } while (choice != 0);  
+
+    printf("Exiting the student information system. Goodbye!\n");
+
+    return 0;
+}
+
+
+void displayMenu() {
+    printf("\n=== Student Information System ===\n");
+    printf("1. Add Student\n");
+    printf("2. View Students\n");
+    printf("3. Search Student\n");
+    printf("0. Exit\n");
+}
+
+
+void addStudent(struct Student students[], int *studentCount) {
+    if (*studentCount < MAX_STUDENTS) {
+        printf("Enter the student name: ");
+        scanf(" %[^\n]", students[*studentCount].name);
+        printf("Enter the student ID: ");
+        scanf("%d", &students[*studentCount].studentId);
+        printf("Enter the grade: ");
+        scanf("%f", &students[*studentCount].grade);
+        (*studentCount)++;
+        printf("Student added successfully!\n");
+    } else {
+        printf("Student limit reached. Cannot add more students.\n");
+    }
+}
+
+
+void viewStudents(struct Student students[], int studentCount) {
+    printf("\n=== Students ===\n");
+    for (int i = 0; i < studentCount; ++i) {
+        printf("Name: %s\n", students[i].name);
+        printf("Student ID: %d\n", students[i].studentId);
+        printf("Grade: %.2f\n", students[i].grade);
+        printf("--------------\n");
+    }
+    if (studentCount == 0) {
+        printf("No students available.\n");
+    }
+}
+
+
+void searchStudent(struct Student students[], int studentCount) {
+    if (studentCount > 0) {
+        int studentId;
+        printf("Enter the student ID to search: ");
+        scanf("%d", &studentId);
+
+        
+        int found = 0;
+        for (int i = 0; i < studentCount; ++i) {
+            if (students[i].studentId == studentId) {
+                printf("Student found!\n");
+                printf("Name: %s\n", students[i].name);
+                printf("Student ID: %d\n", students[i].studentId);
+                printf("Grade: %.2f\n", students[i].grade);
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            printf("Student with ID %d not found.\n", studentId);
+        }
+    } else {
+        printf("No students available to search.\n");
+    }
+}
